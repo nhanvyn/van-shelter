@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;   
+}
+
+html {
+    --primary-green: #2e9a73;
+    --dark-blue: #2B3440;
+    --secondary-blue: #5077A0;
+    --secondary-green: #50A079;
+    --stronger-green: #48906c;
+    --stronger-blue: #486b90;
+    --border-grey: #ccc;
+}
+
+.container {
+    max-width: 80rem;
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.filter-form{
+    display: flex;
+}
+
+.search-filter {
+    display: grid;
+    grid-template-rows: auto auto; 
+    width: 100%;
+    padding: 20px;
+    background-color: #f6f5f5;
+    border-radius: 5px;
+}
+
+.search-filter .bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+ 
+
+}
+
+
+
+.search-filter .bottom > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.search-filter .type-sec label {
+    font-weight: bold; 
+}
+
+
+
+
+.search-filter input[type="text"],
+.search-filter select {
+    width: 100%; 
+    padding: 2px;
+    margin-top: 5px; 
+    box-sizing: border-box; 
+}
+
+.submit-sec {
+    display: flex;
+    justify-content: center;
+
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-green);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px; 
+    width: 30%; 
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #247d46; 
+}
+
+
+
+/* --------------pet section ------------- */
+
+
+
+.pet-sec {
+    margin-top: 70px;
+
+}
+
+.pet-grid {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    width: 100%;
+    gap: 20px;
+
+}
+
+.pet-card {
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd; 
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 406px; 
+   
+}
+
+.pet-card h2 {
+    color: #333; 
+}
+
+.pet-card p {
+    color: #666; 
+    margin-bottom: 8px; 
+}
+
+.pet-card .view-details {
+    background-color: var(--primary-green); 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    width: 100%;
+    text-align: center;
+    font-weight: bold; 
+}
+
+.pet-card .view-details:hover {
+    background-color: #0056b3; 
+}
+
+.pet-card-header {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.pet-card-header p {
+    font-size: 1.8rem;
+}
+
+
+.pet-card-header h2 {
+    line-height: 1.5; 
+}
+
+.pet-card-header p {
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
