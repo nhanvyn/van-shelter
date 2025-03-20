@@ -56,6 +56,10 @@ html {
 .search-filter .type-sec label {
     font-weight: bold; 
 }
+.search-filter .type-sec {
+    display: flex;
+    gap: 20px;
+}
 
 
 
