@@ -3,7 +3,7 @@ require("db.php");
 $breedQuery = "SELECT breed_id, breed_name FROM breeds ORDER BY breed_id ASC;";
 $typeQuery = "SELECT * FROM animaltype ORDER BY type_id ASC;";
 $statusQuery = "SELECT * FROM statuses ORDER BY status_name ASC;";
-$sourceQuery = "SELECT * FROM source ORDER BY source_id ASC;";
+$sourceQuery = "SELECT * FROM sources ORDER BY source_id ASC;";
 $sexQuery = "SELECT DISTINCT sex FROM Pets ORDER BY sex DESC;";
 $ageQuery = "SELECT DISTINCT age_category FROM Pets";
 
@@ -37,6 +37,16 @@ $ageResult = $db->query($ageQuery);
     <link rel="stylesheet" href="./css/index.css">
 </head>
 
+
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    
+}
+?>
+
+
+
 <body>
     <main>
         <div class="container">
@@ -45,9 +55,6 @@ $ageResult = $db->query($ageQuery);
                     <div class="top">
                         <label>Types:</label>
                         <div class="type-sec">
-                            
-                      
-
                             <?php while ($row = $typeResult->fetch_assoc()) { ?>
                             
                                 <div>
@@ -55,8 +62,6 @@ $ageResult = $db->query($ageQuery);
                                     <label><?= $row['type_name'] ?></label>
                                 </div>
                             <?php } ?>
-
-
                         </div>
                     </div>
                     <div class="bottom">
@@ -127,15 +132,14 @@ $ageResult = $db->query($ageQuery);
 
                             <div class="source-drop-down">
                                 <label for="source">Sources:</label>
-                                <!-- <select name="source" id="source">
-                                    <option value="VPD IMPOUND">VPD IMPOUND</option>
-                                </select> -->
-
-                                <?php while ($row = $sourceResult->fetch_assoc()) { ?>
-                                        <option value="<?= $row['source_name'] ?>">
-                                            <?= $row['source_name'] ?>
-                                        </option>
-                                <?php } ?>
+                                <select name="source" id="source">
+                                    <option>Any</option>
+                                    <?php while ($row = $sourceResult->fetch_assoc()) { ?>
+                                            <option value="<?= $row['source_name'] ?>">
+                                                <?= $row['source_name'] ?>
+                                            </option>
+                                    <?php } ?>
+                                </select>
                             </div>
 
 
