@@ -1,0 +1,1 @@
+<!-- page after clicking on view detail button on pet-card -->
