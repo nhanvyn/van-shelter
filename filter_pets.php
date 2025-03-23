@@ -69,19 +69,19 @@ if (!empty($source_id)) {
     $types .= "i";
 }
 
+
 if (!empty($within)) {
-    if (!empty($within)) {
-        if ($within === "30 days") {
-            $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
-        } elseif ($within === "3 month") {
-            $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
-        } elseif ($within === "6 month") {
-            $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-        } elseif ($within === "1 year") {
-            $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
-        }
+    if ($within === "30 days") {
+        $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+    } elseif ($within === "3 month") {
+        $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
+    } elseif ($within === "6 month") {
+        $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+    } elseif ($within === "1 year") {
+        $query .= " AND Pets.date_impounded >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
     }
 }
+
 
 if ($sort === "oldest") {
     $query .= " ORDER BY Pets.date_impounded ASC";
@@ -92,7 +92,11 @@ if ($sort === "oldest") {
 
 $query .= " LIMIT 200";
 $stmt = $db->prepare($query);
-
+if (!$stmt) {
+    http_response_code(500);
+    echo "Database error: " . $db->error;
+    exit;
+}
 
 // echo "<pre>";
 // echo "Query: $query\n";

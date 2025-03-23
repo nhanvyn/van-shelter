@@ -27,7 +27,7 @@ $statusResult = $db->query($statusQuery);
 $sourceResult = $db->query($sourceQuery);
 $sexResult = $db->query($sexQuery);
 $ageResult = $db->query($ageQuery);
-$petResult = $db->query(query: $petQuery);
+$petResult = $db->query($petQuery);
 
 ?>
 
