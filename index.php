@@ -1,12 +1,25 @@
 <?php
 require("db.php");
+
+// Query for pre-populating filter's fields
 $breedQuery = "SELECT breed_id, breed_name FROM breeds ORDER BY breed_id ASC;";
 $typeQuery = "SELECT * FROM animaltype ORDER BY type_id ASC;";
 $statusQuery = "SELECT * FROM statuses ORDER BY status_name ASC;";
 $sourceQuery = "SELECT * FROM sources ORDER BY source_id ASC;";
 $sexQuery = "SELECT DISTINCT sex FROM Pets ORDER BY sex DESC;";
 $ageQuery = "SELECT DISTINCT age_category FROM Pets";
-
+$petQuery = "SELECT 
+  Pets.*, 
+  breeds.breed_name,
+  animaltype.type_id,
+  animaltype.type_name,
+    statuses.status_name
+FROM Pets
+INNER JOIN statuses ON statuses.status_id = Pets.status_id 
+INNER JOIN breeds ON breeds.breed_id = Pets.breed_id
+INNER JOIN animaltype ON animaltype.type_id = breeds.type_id
+ORDER BY Pets.date_impounded DESC
+LIMIT 200; ";
 
 $breedResult = $db->query($breedQuery);
 $typeResult = $db->query($typeQuery);
@@ -14,14 +27,7 @@ $statusResult = $db->query($statusQuery);
 $sourceResult = $db->query($sourceQuery);
 $sexResult = $db->query($sexQuery);
 $ageResult = $db->query($ageQuery);
-
-
-
-
-
-// $breedResult = $db->query($query);
-
-
+$petResult = $db->query(query: $petQuery);
 
 ?>
 
@@ -33,18 +39,11 @@ $ageResult = $db->query($ageQuery);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/script.js"></script>
     <title>Vancouver Shelter</title>
     <link rel="stylesheet" href="./css/index.css">
 </head>
-
-
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    
-}
-?>
-
 
 
 <body>
@@ -56,9 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <label>Types:</label>
                         <div class="type-sec">
                             <?php while ($row = $typeResult->fetch_assoc()) { ?>
-                            
                                 <div>
-                                    <input type="checkbox" value="<?= $row['type_id'] ?>">
+                                    <input type="checkbox" name="checkBoxes[]" value="<?= $row['type_id'] ?>">
                                     <label><?= $row['type_name'] ?></label>
                                 </div>
                             <?php } ?>
@@ -68,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <div class="left">
                             <div class="breed-drop-down">
                                 <label for="breeds">Choose a breed:</label>
-                                
-                                <select name="breeds" id="breeds">
-                                    <option value="">None</option>
+
+                                <select name="breed" id="breed">
+                                    <option value="">Any</option>
                                     <?php while ($row = $breedResult->fetch_assoc()) { ?>
-                                        <option value="<?= $row['breed_name'] ?>">
+                                        <option value="<?= $row['breed_id'] ?>">
                                             <?= $row['breed_name'] ?>
                                         </option>
                                     <?php } ?>
@@ -81,14 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                             <div class="name-field">
                                 <label for="name">Name: </label>
-                                <input type="text" id="name">
+                                <input type="text" id="name" name="name">
                             </div>
 
 
                             <div class="sex-drop-down">
                                 <label for="sex">Sex:</label>
                                 <select name="sex" id="sex">
-                                    <option value="any">Any</option>
+                                    <option value="">Any</option>
                                     <?php while ($row = $sexResult->fetch_assoc()) { ?>
                                         <option value="<?= $row['sex'] ?>">
                                             <?= $row['sex'] ?>
@@ -101,12 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <div class="middle">
                             <div class="color-field">
                                 <label for="color">Color: </label>
-                                <input type="text" id="color">
+                                <input type="text" id="color" name="color">
                             </div>
                             <div class="age-drop-down">
                                 <label for="age">Age group:</label>
                                 <select name="age_category" id="age_category">
-                                    <option value="Any">Any</option>
+                                    <option value="">Any</option>
                                     <?php while ($row = $ageResult->fetch_assoc()) { ?>
                                         <option value="<?= $row['age_category'] ?>">
                                             <?= $row['age_category'] ?>
@@ -118,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             <div class="status-drop-down">
                                 <label for="status">Status:</label>
                                 <select name="status" id="status">
-                                    <option value="Any">Any</option>
+                                    <option value="">Any</option>
 
                                     <?php while ($row = $statusResult->fetch_assoc()) { ?>
-                                        <option value="<?= $row['status_name'] ?>">
+                                        <option value="<?= $row['status_id'] ?>">
                                             <?= $row['status_name'] ?>
                                         </option>
                                     <?php } ?>
@@ -133,29 +131,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             <div class="source-drop-down">
                                 <label for="source">Sources:</label>
                                 <select name="source" id="source">
-                                    <option>Any</option>
+                                    <option value="">Any</option>
                                     <?php while ($row = $sourceResult->fetch_assoc()) { ?>
-                                            <option value="<?= $row['source_name'] ?>">
-                                                <?= $row['source_name'] ?>
-                                            </option>
+                                        <option value="<?= $row['source_id'] ?>">
+                                            <?= $row['source_name'] ?>
+                                        </option>
                                     <?php } ?>
                                 </select>
                             </div>
 
 
                             <div class="date-drop-down">
-                                <label for="date">Within Past:</label>
-                                <select name="date" id="date">
-                                    <option value="1 year"> 1 year </option>
+                                <label for="within">Within Past:</label>
+                                <select name="within" id="within">
+                                    <option value="">Any</option>
+                                    <option value="30 days">30 days</option>
+                                    <option value="3 month">3 month</option>
+                                    <option value="6 month">6 month</option>
+                                    <option value="1 year">1 year</option>
+                                    
+                                    
                                 </select>
                             </div>
 
                             <div class="sort-drop-down">
-                                <label for="sort">Sort By:</label>
-                                <select name="sort" id="sort">
-                                    <option value="Date Impound">Date Impound</option>
+                                <label for="sort-option">Sort By Impound Date:</label>
+                                <select name="sort-option" id="sort-option">
+                                    <option value="">None</option>
+                                    <option value="oldest">Oldest</option>
+                                    <option value="newest">Newest</option>
                                 </select>
                             </div>
+
                         </div>
                     </div>
 
@@ -167,51 +174,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         <div class="container pet-sec">
 
-           <div class="pet-grid">
-                <div class="pet-card">
-                    <div class="pet-card-header">
-                        <h2>Name: Bulma </h2>
-                        <p>🐱</p>
-                    </div>
-                    <p>Type: Cat  </p> 
-                    <p>Age: Puppy</p>
-                    <p>Impound Date: 01-01-2021</p>
-                    <p>Status: Adoptable</p>
-                    <p>Color: Yellow & White</p>
-                    <button class="view-details">View Details</button>
-                </div>
-    
-                <div class="pet-card">
-                    <div class="pet-card-header">
-                        <h2>Name: Bulma </h2>
-                        <p>🐱</p>
-                    </div>
-                    <p>Type: Cat  </p> 
-                    <p>Age: Puppy</p>
-                    <p>Impound Date: 01-01-2021</p>
-                    <p>Status: Adoptable</p>
-                    <p>Color: Yellow & White</p>
-                    <button class="view-details">View Details</button>
-                </div>
-    
-                <div class="pet-card">
-                    <div class="pet-card-header">
-                        <h2>Name: Bulma </h2>
-                        <p>🐱</p>
-                    </div>
-                    <p>Type: Cat  </p> 
-                    <p>Age: Puppy</p>
-                    <p>Impound Date: 01-01-2021</p>
-                    <p>Status: Adoptable</p>
-                    <p>Color: Yellow & White</p>
-                    <button class="view-details">View Details</button>
-                </div>
+            <div class="pet-grid">
 
-                
-           </div>
+                <?php include('components/pet_card.php'); ?>
+            </div>
 
 
-            
+
         </div>
     </main>
 </body>

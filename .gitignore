@@ -1,2 +1,5 @@
 *.csv
 *.py
+data_clean/
+.DS_Store
+.vscode/
