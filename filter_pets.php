@@ -90,7 +90,7 @@ if ($sort === "oldest") {
 }
 
 
-$query .= " LIMIT 200";
+$query .= " LIMIT 9";
 $stmt = $db->prepare($query);
 if (!$stmt) {
     http_response_code(500);
@@ -119,5 +119,6 @@ $petResult = $stmt->get_result();
 
 
 ?>
+
 
 <?php include('components/pet_card.php'); ?>

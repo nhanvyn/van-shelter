@@ -1,6 +1,16 @@
 <?php
 require("db.php");
 
+
+// Query for paging 
+$countQuery = "SELECT COUNT(*) as counts FROM pets;";
+$countResult = $db->query($countQuery);
+$totalPets = $countResult->fetch_assoc()['counts'];
+$LIMIT = 9;
+$totalPages = ceil($totalPets / $LIMIT);
+$page = isset($_GET['page']) ? max(0, intval($_GET['page'])) : 0; // max() makes sure user cannot pass negative number
+$OFFSET = $page* $LIMIT;
+
 // Query for pre-populating filter's fields
 $breedQuery = "SELECT breed_id, breed_name FROM breeds ORDER BY breed_id ASC;";
 $typeQuery = "SELECT * FROM animaltype ORDER BY type_id ASC;";
@@ -19,7 +29,7 @@ INNER JOIN statuses ON statuses.status_id = Pets.status_id
 INNER JOIN breeds ON breeds.breed_id = Pets.breed_id
 INNER JOIN animaltype ON animaltype.type_id = breeds.type_id
 ORDER BY Pets.date_impounded DESC
-LIMIT 200; ";
+LIMIT $LIMIT OFFSET $OFFSET; ";
 
 $breedResult = $db->query($breedQuery);
 $typeResult = $db->query($typeQuery);
@@ -173,14 +183,15 @@ $petResult = $db->query($petQuery);
         </div>
 
         <div class="container pet-sec">
-
             <div class="pet-grid">
-
                 <?php include('components/pet_card.php'); ?>
             </div>
 
-
-
+            <div class="paging">
+                <?php for ($i = 0; $i < $totalPages; $i++): ?>
+                        <a href="index.php?page=<?= $i?>"> <?= $i?>| </a>
+                <?php endfor; ?>
+            </div>
         </div>
     </main>
 </body>

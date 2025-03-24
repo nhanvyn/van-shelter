@@ -21,4 +21,6 @@
             View Details
         </button>
     </div>
+    
 <?php endwhile; ?>
+
