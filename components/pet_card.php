@@ -17,7 +17,7 @@
         <p>Status: <?= htmlspecialchars($row['status_name']) ?></p>
         <p>Color: <?= htmlspecialchars($row['color']) ?></p>
         <button class="view-details"
-                onclick="window.location.href='pet_details.php?pet=<?= $row['animal_id'] ?>'">
+                onclick="window.location.href='pet-detail.php?pet=<?= $row['animal_id'] ?>'">
             View Details
         </button>
     </div>
