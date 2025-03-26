@@ -12,6 +12,7 @@
             </p>
         </div>
         <p>Type: <?= htmlspecialchars($row['type_name']) ?></p>
+        <p>Breed: <?= htmlspecialchars($row['breed_name']) ?></p>
         <p>Age: <?= htmlspecialchars($row['age_category']) ?></p>
         <p>Impound Date: <?= htmlspecialchars($row['date_impounded']) ?></p>
         <p>Status: <?= htmlspecialchars($row['status_name']) ?></p>

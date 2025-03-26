@@ -2,7 +2,7 @@
 require("db.php");
 
 
-// Query for paging 
+// Query and setup for server side pagination
 $countQuery = "SELECT COUNT(*) as counts FROM pets;";
 $countResult = $db->query($countQuery);
 $totalPets = $countResult->fetch_assoc()['counts'];
