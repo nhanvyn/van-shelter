@@ -1,4 +1,10 @@
 <?php
+// filter_pets.php
+// Description: Handles client-side AJAX requests for filtering pets, when user click on search button. 
+// Unlike index.php, it does not return the full HTML page, but instead returns only 
+// the necessary components (e.g., pet list and pagination) as JSON data, 
+// which the client-side JavaScript uses to dynamically update the page.
+
 require("db.php");
 
 
@@ -17,7 +23,7 @@ $baseQuery = "FROM Pets
               INNER JOIN breeds ON breeds.breed_id = Pets.breed_id
               INNER JOIN animaltype ON animaltype.type_id = breeds.type_id
               INNER JOIN statuses ON statuses.status_id = Pets.status_id
-              WHERE 1=1";   
+              WHERE Pets.animal_id IS NOT NULL";   
 
 $params = [];
 $types = "";
