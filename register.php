@@ -2,7 +2,7 @@
 session_start();
 
 require('db.php');
-include('navbar.php'); 
+include('components/navbar.php'); 
 
 // Define variables and initialize with empty values
 $name = $email = $password = $confirm_password = "";

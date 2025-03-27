@@ -1,5 +1,5 @@
 <?php
-require("db.php");
+require("components/db.php");
 
 // Get the pet ID from the URL
 if (isset($_GET['pet'])) {
