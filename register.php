@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">  
 </head>
 <body>
-    <div class="container">
+    <div class="container auth-sec">
         <h2>Create an Account</h2>
         <p>Please fill this form to create an account.</p>
 

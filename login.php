@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container auth-sec">
         <h2>Login</h2>
         <p>Please enter your credentials to login.</p>
 

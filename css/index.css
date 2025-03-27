@@ -336,16 +336,16 @@ html {
 }
 
 /* Form title */
-h2 {
+.auth-sec h2 {
     text-align: center;
     color: #2e9a73;
     margin-bottom: 20px;
 }
 
 /* Form elements */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.auth-sec input[type="text"],
+.auth-sec input[type="email"],
+.auth-sec input[type="password"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0 20px;
@@ -355,7 +355,7 @@ input[type="password"] {
 }
 
 /* Form Submit Button */
-input[type="submit"] {
+.auth-sec input[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: #2e9a73;
@@ -367,23 +367,23 @@ input[type="submit"] {
     transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
+.auth-sec input[type="submit"]:hover {
     background-color: #1d7c59;
 }
 
 /* Links (e.g., Register/Already have an account?) */
-p {
+.auth-sec p {
     text-align: center;
     margin-top: 20px;
 }
 
-p a {
+.auth-sec p a {
     color: #2e9a73;
     text-decoration: none;
     font-weight: bold;
 }
 
-p a:hover {
+.auth-sec p a:hover {
     text-decoration: underline;
 }
 
