@@ -49,6 +49,8 @@ if (isset($_GET['pet'])) {
     <script src="./js/script.js"></script>
     <title>Pet Details</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/pet_detail.css">
+
 </head>
 
 <body>

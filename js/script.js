@@ -9,6 +9,7 @@ function renderPagination(totalPages, currentPage, formData) {
 }
 
 
+
 $("document").ready(function() {
     // handler for form submit
     $('.filter-form').submit(function(event) {
@@ -17,7 +18,7 @@ $("document").ready(function() {
         history.pushState(null, '', `index.php?${formData}`);
 
 
-        alert("call in submit form click")
+        // alert("call in submit form click")
 
         $.ajax({
             type: 'GET',
@@ -34,7 +35,7 @@ $("document").ready(function() {
 
             },
             error: function () {
-                alert('Error fetching pet');
+                // alert('Error fetching pet');
             }
         })
     });
@@ -44,7 +45,7 @@ $("document").ready(function() {
     $(document).on('click', '.ajax-page', function(event) {
         event.preventDefault();
         const page = $(this).data('page');
-        alert("call in ajax page click");
+        // alert("call in ajax page click");
 
         const formData = $('.filter-form').serialize() + `&page=${page}`;
         history.pushState(null, '', `index.php?${formData}`);
@@ -68,7 +69,7 @@ $("document").ready(function() {
     $(document).on('click', '.server-page', function(event) {
         event.preventDefault();
         const page = $(this).data('page');
-        alert("call in server page click");
+        // alert("call in server page click");
 
         const formData = $('.filter-form').serialize() + `&page=${page}`;
         history.pushState(null, '', `index.php?${formData}`);
@@ -86,6 +87,34 @@ $("document").ready(function() {
             }
         });
     })
+
+    $(document).on('click', '.bookmark-icon', function () {
+    const icon = $(this);
+    const petCard = icon.closest('.pet-card');
+    const petId = petCard.data('pet-id');
+
+    // Optimistically toggle icon UI
+    icon.toggleClass('fa-regular fa-solid');
+
+    $.ajax({
+        type: 'POST',
+        url: 'save_bookmark.php',
+        data: { pet_id: petId },
+        success: function (response) {
+            const res = JSON.parse(response);
+            if (!res.success) {
+                // go back to default icon if failed
+                icon.toggleClass('fa-regular fa-solid');
+            }
+        },
+        error: function () {
+            // Rollback icon if error
+            icon.toggleClass('fa-regular fa-solid');
+            // alert('Error saving bookmark.');
+        }
+    });
+});
+
 
 });
 

@@ -6,6 +6,15 @@
 // which the client-side JavaScript uses to dynamically update the page.
 
 require("db.php");
+session_start();
+require('helpers.php');
+
+
+// Get pets that are bookmarked by user
+$bookmarked_pet_ids = [];
+if (isset($_SESSION['user_id'])) {
+    $bookmarked_pet_ids = getUserBookmarkedPetIds($db, $_SESSION['user_id']);
+}
 
 
 $type_ids = $_GET['checkBoxes'] ?? [];
@@ -28,7 +37,7 @@ $baseQuery = "FROM Pets
 $params = [];
 $types = "";
 
-
+// Apply filters 
 if (!empty($type_ids)) {
     $question_marks = array_fill(0, count($type_ids), '?');
     $placeholder_str = implode(",", $question_marks);
@@ -118,8 +127,6 @@ $page = isset($_GET['page']) ? max(0, intval($_GET['page'])) : 0; // max() makes
 $OFFSET = $page* $LIMIT;
 
 
-
-
 // prepare and execute filtered pet query
 $fullQuery .= " LIMIT $LIMIT OFFSET $OFFSET";
 $stmt = $db->prepare($fullQuery);
@@ -129,57 +136,24 @@ if (!$stmt) {
     exit;
 }
 
-
-// ------------code for debugging-----------
-// echo "<pre>";
-// echo "Query: $fullQuery\n";
-// echo "Types: $types\n";
-// echo "Params: ";
-// print_r($params);
-// echo "</pre>";
-// ------------code for debugging-----------
-
 if ($params) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
 $petResult = $stmt->get_result();
-
-// ------------code for debugging-----------
-// echo "<pre>Results:\n";
-// while ($row = $petResult->fetch_assoc()) {
-//     print_r($row);
-// }
-// echo "</pre>";
-// ------------code for debugging-----------
-
 ?>
 
 
 <?php
-    // Sending back data to client 
-
-    ob_start(); // this will capture all outputs from this point until ob_get_clean()
-    
-    // ------------code for debugging-----------
-    // echo "<pre>";
-    // echo "Query: $fullQuery\n";
-    // echo "Types: $types\n";
-    // echo "Params: ";
-    // print_r($params);
-    // echo "</pre>";
-    // ------------code for debugging-----------
-
-    
-    include('components/pet_card.php'); // render all cards 
+    // Sending back data to ajax client 
+    ob_start(); // this will capture all outputs from this point until ob_get_clean()    
+    include('components/pet_cards.php'); // render all cards 
     $cardsHtml = ob_get_clean(); 
     echo json_encode([
         'html' => $cardsHtml,
         'totalPages' => $totalPages,
         'currentPage' => $page
     ]);
-
- 
 ?>
 
 

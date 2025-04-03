@@ -8,10 +8,12 @@ Description: This is the view template used by index.php. It renders the list of
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
     <script src="./js/script.js"></script>
     <title>Vancouver Shelter</title>
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/paging.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">  <!-- icon library - source: https://cdnjs.com/libraries/font-awesome -->
 </head>
 
 <body>
@@ -157,7 +159,7 @@ Description: This is the view template used by index.php. It renders the list of
 
         <div class="container pet-sec">
             <div class="pet-grid">
-                <?php include('components/pet_card.php'); ?>
+                <?php include('components/pet_cards.php'); ?>
             </div>
 
             <div class="paging">

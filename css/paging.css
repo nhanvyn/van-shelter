@@ -1,0 +1,12 @@
+.paging {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 0.25rem;
+    list-style-type: none;
+}
+
+

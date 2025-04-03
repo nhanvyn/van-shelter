@@ -1,0 +1,71 @@
+/* Profile form container */
+.profile-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.profile-form h2 {
+    text-align: center;
+    color: #2e9a73;
+    margin-bottom: 20px;
+}
+
+/* Input fields */
+.profile-form .form-group input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Submit Button */
+.profile-form .form-group .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #2e9a73;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-form .form-group .submit-btn:hover {
+    background-color: #1d7c59;
+}
+
+/* Error handling for fields */
+.profile-form .has-error input {
+    border-color: red;
+}
+
+.profile-form .help-block {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Links */
+.profile-form p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-form p a {
+    color: #2e9a73;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.profile-form p a:hover {
+    text-decoration: underline;
+}

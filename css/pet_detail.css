@@ -1,0 +1,120 @@
+
+
+/* Pet Detail Section */
+.pet-detail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    min-height: 80vh;
+}
+
+.pet-detail-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative; 
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.pet-detail-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Back to Pets Button (X in the top-right corner) */
+.pet-detail-card .back-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: var(--primary-green);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pet-detail-card .back-button:hover {
+    color: var(--secondary-blue);
+}
+
+/* Main content area for flexbox layout */
+.pet-detail-content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* Left Section: Icon and Name */
+.pet-detail-left {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 40%; 
+}
+
+.pet-detail-left .pet-icon {
+    font-size: 5rem;  
+    margin-bottom: 10px; 
+}
+
+.pet-detail-left h2 {
+    font-size: 2rem;
+    color: var(--dark-blue);
+    text-align: center;
+}
+
+/* Right Section: Descriptions */
+.pet-detail-right {
+    width: 55%;  
+}
+
+.pet-detail-right p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.pet-detail-right strong {
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .pet-detail-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pet-detail-left, .pet-detail-right {
+        width: 100%;
+        text-align: center;
+    }
+
+    .pet-detail-left .pet-icon {
+        font-size: 4rem;
+    }
+
+    .pet-detail-left h2 {
+        font-size: 1.6rem;
+    }
+
+    .pet-detail-right p {
+        font-size: 0.9rem;
+    }
+
+    .pet-detail-card .back-button {
+        font-size: 1.5rem;
+    }
+}
+
+
+
+

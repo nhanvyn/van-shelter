@@ -1,0 +1,64 @@
+
+
+/* Global Styles for the Form */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.auth-sec h2 {
+    text-align: center;
+    color: #2e9a73;
+    margin-bottom: 20px;
+}
+
+/* Form elements */
+.auth-sec input[type="text"],
+.auth-sec input[type="email"],
+.auth-sec input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Form Submit Button */
+.auth-sec input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #2e9a73;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-sec input[type="submit"]:hover {
+    background-color: #1d7c59;
+}
+
+/* Links (e.g., Register/Already have an account?) */
+.auth-sec p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-sec p a {
+    color: #2e9a73;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-sec p a:hover {
+    text-decoration: underline;
+}

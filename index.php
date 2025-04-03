@@ -7,8 +7,14 @@
 
 require("db.php");
 session_start(); 
+require('helpers.php');
 
 
+// Get pets that are bookmarked by user
+$bookmarked_pet_ids = [];
+if (isset($_SESSION['user_id'])) {
+    $bookmarked_pet_ids = getUserBookmarkedPetIds($db, $_SESSION['user_id']);
+}
 
 // Extract filter values from $_GET.
 $type_ids = $_GET['checkBoxes'] ?? [];
@@ -97,7 +103,9 @@ if (!empty($within)) {
 $countQuery = "SELECT COUNT(*) " . $baseQuery;
 $stmtCount = $db->prepare($countQuery);
 if ($params) $stmtCount->bind_param($types, ...$params);
-$stmtCount->execute();
+if (!$stmtCount->execute()) {
+    exit("Error executing count query: " . $stmtCount->error);
+}
 $countResult = $stmtCount->get_result();
 $totalPets = $countResult->fetch_row()[0];
 $totalPages = ceil($totalPets / $LIMIT);
@@ -109,7 +117,9 @@ $fullQuery .= ($sort === "oldest") ? " ORDER BY Pets.date_impounded ASC" : " ORD
 $fullQuery .= " LIMIT $LIMIT OFFSET $OFFSET";
 $stmt = $db->prepare($fullQuery);
 if ($params) $stmt->bind_param($types, ...$params);
-$stmt->execute();
+if (!$stmt->execute()) {
+    exit("Error executing fetch query: " . $stmt->error);
+}
 $petResult = $stmt->get_result();
 
 

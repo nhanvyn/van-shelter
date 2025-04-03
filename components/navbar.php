@@ -1,5 +1,6 @@
 <!-- Navigation Bar -->
 <link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/navbar.css">
 
 <div class="navbar">
     <ul>
@@ -12,6 +13,7 @@
         <?php else: ?>
             <!-- If the user is logged in, show Profile and Logout links -->
             <li><a href="profile.php">Profile</a></li>
+            <li><a href="bookmarked_pets.php">Saved Pets</a></li>
             <li><a href="logout.php">Logout</a></li>
         <?php endif; ?>
     </ul>
