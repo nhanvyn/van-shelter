@@ -10,16 +10,13 @@ function renderPagination(totalPages, currentPage, formData) {
 
 
 
-$("document").ready(function() {
+$(document).ready(function() {
     // handler for form submit
     $('.filter-form').submit(function(event) {
         event.preventDefault();
         const formData = $(this).serialize() + `&page=0`;
         history.pushState(null, '', `index.php?${formData}`);
-
-
         // alert("call in submit form click")
-
         $.ajax({
             type: 'GET',
             url: 'filter_pets.php',
@@ -105,12 +102,14 @@ $("document").ready(function() {
             if (!res.success) {
                 // go back to default icon if failed
                 icon.toggleClass('fa-regular fa-solid');
+                alert('failed to set the bookmark');
+
             }
         },
         error: function () {
             // Rollback icon if error
             icon.toggleClass('fa-regular fa-solid');
-            // alert('Error saving bookmark.');
+            alert('Error saving bookmark.');
         }
     });
 });

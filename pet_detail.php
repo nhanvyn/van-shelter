@@ -46,7 +46,7 @@ if (isset($_GET['pet'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="./js/home.js"></script>
     <title>Pet Details</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/pet_detail.css">
