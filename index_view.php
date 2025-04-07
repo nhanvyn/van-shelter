@@ -157,7 +157,7 @@ Description: This is the view template used by index.php. It renders the list of
             </form>
         </div>
 
-        <div class="container pet-sec">
+        <div class="container home-pet-sec">
             <div class="pet-grid">
                 <?php include('components/pet_cards.php'); ?>
             </div>

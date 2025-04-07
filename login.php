@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check for errors before querying the database
     if (empty($email_err) && empty($password_err)) {
         // Prepare a select statement to get user data by email
-        $sql = "SELECT id, name, email, password FROM users WHERE email = ?";
+        $sql = "SELECT id, name, email, password, role FROM users WHERE email = ?";
 
         if ($stmt = $db->prepare($sql)) {
             // Bind the email parameter
@@ -39,8 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if the email exists
             if ($stmt->num_rows == 1) {
                 // Bind the result variables
-                $stmt->bind_result($id, $name, $email, $hashed_password);
-
+                $stmt->bind_result($id, $name, $email, $hashed_password, $role);
                 // Fetch the result
                 if ($stmt->fetch()) {
                     // Check if the password is correct
@@ -50,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION['user_id'] = $id;
                         $_SESSION['user_name'] = $name;
                         $_SESSION['user_email'] = $email;
-
+                        $_SESSION['role'] = $role;
                         // Redirect to dashboard
                         header("location: index.php"); 
                         exit;

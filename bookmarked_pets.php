@@ -1,5 +1,5 @@
 <?php
-// bookmarked.php
+// Description: This page shows bookmarked pets. When user unbookmark a pet in this page, the entire pet card will be removed 
 require('db.php');
 session_start();
 
@@ -41,11 +41,11 @@ if (count($bookmarked_pet_ids) > 0) {
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">  <!-- icon library - source: https://cdnjs.com/libraries/font-awesome -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
-    <script src="./js/bookmarked_pets.js"></script>
+    <script src="./js/home.js"></script>
 </head>
 <body>
     <?php include('components/navbar.php'); ?>
-    <div class="container pet-sec">
+    <div class="container saved-pet-sec">
         <h2>Saved Pets</h2>
         <div class="pet-grid">
             <?php

@@ -1,4 +1,5 @@
 function renderPagination(totalPages, currentPage, formData) {
+    // Util function for display the pages and bold the page that user has navigated to 
     let paginationHTML = '';
     for (let i = 0; i < totalPages; i++) {
         const pageLink = `${window.location.pathname}?${formData}&page=${i}`;
@@ -8,10 +9,47 @@ function renderPagination(totalPages, currentPage, formData) {
 
 }
 
+function fetchNotifications() {
+    // Util function for getting all old and new notifications about bookmarked pets status
+    $.ajax({
+        type: 'GET',
+        url: 'get_notifications.php',
+        dataType: 'json',
+        success: function (data) {
+            if (data.notifications && data.notifications.length > 0) {
+                $('#notificationList').html(''); 
+                data.notifications.forEach(notif => {
+                    const newLabel = notif.is_read ? '' : '<span class="new-label">New</span>';
+                    $('#notificationList').append(`
+                        <li data-id="${notif.id}">
+                            <div class="notif-content">
+                                <span class="notif-message">${notif.message}</span>
+                                <span class="notif-meta">
+                                    <span class="timestamp">${notif.timestamp}</span>
+                                    ${newLabel}
+                                </span>
+                            </div>
+                        </li>
+                    `);
+                });
+
+                // Update header to show count
+                $('.dropdown-header').text(`Notifications (${data.unread} new of ${data.total})`);
+                // Toggle red dot
+                $('#notificationDot').toggle(data.unread > 0);
+            } else {
+                // If there is no notification
+                $('#notificationList').html('<li>No notifications</li>');
+                $('.dropdown-header').text('Notifications (0)');
+                $('#notificationDot').hide();
+            }
+        }
+    });
+}
 
 
 $(document).ready(function() {
-    // handler for form submit
+    // Handler for form submit
     $('.filter-form').submit(function(event) {
         event.preventDefault();
         const formData = $(this).serialize() + `&page=0`;
@@ -38,7 +76,7 @@ $(document).ready(function() {
     });
 
 
-    // handler for ajax page click 
+    // Handler for ajax page click 
     $(document).on('click', '.ajax-page', function(event) {
         event.preventDefault();
         const page = $(this).data('page');
@@ -85,35 +123,91 @@ $(document).ready(function() {
         });
     })
 
+   
+    
+
+    // handlere for bookmark click
     $(document).on('click', '.bookmark-icon', function () {
-    const icon = $(this);
-    const petCard = icon.closest('.pet-card');
-    const petId = petCard.data('pet-id');
+        const icon = $(this);
+        const petCard = icon.closest('.pet-card');
+        const petId = petCard.data('pet-id');
 
-    // Optimistically toggle icon UI
-    icon.toggleClass('fa-regular fa-solid');
+        // Optimistically toggle icon UI for user feedback
 
-    $.ajax({
-        type: 'POST',
-        url: 'save_bookmark.php',
-        data: { pet_id: petId },
-        success: function (response) {
-            const res = JSON.parse(response);
-            if (!res.success) {
-                // go back to default icon if failed
-                icon.toggleClass('fa-regular fa-solid');
-                alert('failed to set the bookmark');
-
-            }
-        },
-        error: function () {
-            // Rollback icon if error
+        if (icon.closest('.home-pet-sec').length) {
             icon.toggleClass('fa-regular fa-solid');
-            alert('Error saving bookmark.');
+
+            $.ajax({
+                type: 'POST',
+                url: 'save_bookmark.php',
+                data: { pet_id: petId },
+                success: function (response) {
+                    const res = JSON.parse(response);
+                    if (!res.success) {
+                        // go back to default icon if failed
+                        icon.toggleClass('fa-regular fa-solid');
+                        alert('failed to set the bookmark');
+
+                    }
+                },
+                error: function () {
+                    // Rollback icon if error
+                    icon.toggleClass('fa-regular fa-solid');
+                    alert('Error saving bookmark.');
+                }
+            });
+        }
+
+
+        if (icon.closest('.saved-pet-sec').length) {
+            // Optimistically toggle icon UI for user feedback
+            icon.toggleClass('fa-regular fa-solid');
+
+            $.ajax({
+                type: 'POST',
+                url: 'save_bookmark.php',
+                data: { pet_id: petId },
+                success: function (response) {
+                    const res = JSON.parse(response);
+                    if (!res.success) {
+                        // go back to default icon if failed
+                        icon.toggleClass('fa-regular fa-solid');
+                        alert('failed to set the bookmark');
+                    } else {
+                        petCard.fadeOut(200, function () {
+                            $(this).remove();
+                        });
+                    }
+                },
+                error: function () {
+                    // Rollback icon if error
+                    icon.toggleClass('fa-regular fa-solid');
+                    alert('Error saving bookmark.');
+                }
+            });
         }
     });
-});
 
+    // fetch all notfication once the doc is read
+    fetchNotifications();
+    // after that polling every 5 seconds to check for new notifications
+    setInterval(fetchNotifications, 5000);
+
+    $('#notificationIcon').on('click', function (event) {
+        event.preventDefault();
+        $('#notificationDropdown').toggle();
+        $('#notificationDot').hide(); // Hide red dot
+    
+        // Mark all as read when user toggled notification off 
+        const isNowVisible = $('#notificationDropdown').is(':visible')
+        if (!isNowVisible) {
+            const topId = $('#notificationList li').first().data('id');
+            // alert(`Closed topid = ${topId}`)
+            if (topId) {
+                $.post('mark_notifications_read.php', { top_id: topId });
+            }
+        } 
+    });
 
 });
 

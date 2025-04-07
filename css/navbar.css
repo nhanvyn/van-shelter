@@ -15,9 +15,7 @@
     justify-content: flex-start;
 }
 
-.navbar li {
-    margin-right: 50px;
-}
+
 
 .navbar a {
     text-decoration: none;
@@ -35,4 +33,90 @@
 /* Styling for active link (logged-in user) */
 .navbar a.active {
     background-color: #1d7c59; 
+}
+
+
+
+/* Style for Notification */
+
+
+.notification-container {
+    position: relative;
+}
+
+.icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.red-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    border-radius: 4px;
+}
+
+
+#notificationList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#notificationList li {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.dropdown-header {
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.notif-content {
+    padding: 6px 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.notif-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.new-label {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
 }

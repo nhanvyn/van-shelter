@@ -32,7 +32,7 @@ $page = isset($_GET['page']) ? max(0, intval($_GET['page'])) : 0;
 $LIMIT = 9;
 $OFFSET = $page * $LIMIT;
 
-// Build a SQL base that can be shared between filter and count query 
+// Build a SQL base that will be used to construct filter query and count query 
 $baseQuery = "FROM Pets
               INNER JOIN breeds ON breeds.breed_id = Pets.breed_id
               INNER JOIN animaltype ON animaltype.type_id = breeds.type_id
@@ -46,7 +46,7 @@ $types = "";
 // Apply filters
 if (!empty($type_ids)) {
     $question_marks = array_fill(0, count($type_ids), '?');
-    $placeholder_str = implode(",", $question_marks);
+    $placeholder_str = implode(",", $question_marks );
     $baseQuery  .= " AND animaltype.type_id IN ($placeholder_str)";
     $params = array_merge($params, $type_ids);
     $types = str_repeat("i", count($type_ids));
