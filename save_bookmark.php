@@ -1,6 +1,7 @@
 <?php
-require 'db.php';
+
 session_start();
+require ('db.php');
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);

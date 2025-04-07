@@ -3,6 +3,12 @@
 <link rel="stylesheet" href="css/navbar.css">
 
 <div class="navbar">
+    <!-- Logo on the left -->
+    <div class="logo">
+        <img src="images/logo.png" alt="Logo"> <!-- Replace with your actual logo path -->
+    </div>
+
+    <!-- Navigation Links -->
     <ul>
         <li><a href="index.php">Home</a></li>
 

@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 require("db.php");
 include('components/navbar.php');
 
@@ -15,11 +15,16 @@ $stmt->fetch();
 $stmt->close();
 
 // Initialize variables for form data
-$new_name = $new_email = $new_password = "";
-$name_err = $email_err = $password_err = "";
+$new_name = $new_email = $new_password = $current_password = "";
+$name_err = $email_err = $password_err = $current_password_err = "";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST['checkBoxes'])) {
+        // Save the selected pet types in session
+        $_SESSION['preferred_pet_types'] = $_POST['checkBoxes'];
+    }
     // Validate and update name
     if (empty(trim($_POST["name"]))) {
         $name_err = "Name is required.";
@@ -34,31 +39,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $new_email = trim($_POST["email"]);
     }
 
-    // Change the password (optional)
+    // Validate and check current password for password change
     if (!empty(trim($_POST["password"]))) {
-        $new_password = trim($_POST["password"]);
-        if (strlen($new_password) < 6) {
-            $password_err = "Password must be at least 6 characters.";
+        if (empty(trim($_POST["current_password"]))) {
+            $current_password_err = "Please enter your current password.";
         } else {
-            // Hash the new password
+            $current_password = trim($_POST["current_password"]);
+            if (!password_verify($current_password, $stored_password)) {
+                $current_password_err = "The current password you entered is incorrect.";
+            }
+        }
+        // Change the password (optional)
+        if (empty($current_password_err) && strlen(trim($_POST["password"])) >= 6) {
+            $new_password = trim($_POST["password"]);
             $new_password = password_hash($new_password, PASSWORD_DEFAULT);
         }
     }
 
-    // If there are no errors, update the user details in the database
-    if (empty($name_err) && empty($email_err) && empty($password_err)) {
-        // Prepare the update query
+    // Save user preferences (checkboxes for pet types)
+    if (isset($_POST['pet_types'])) {
+        $_SESSION['preferred_pet_types'] = $_POST['pet_types']; // Save preferences in session
+    }
+
+    // If no errors, update user details in database
+    if (empty($name_err) && empty($email_err) && empty($password_err) && empty($current_password_err)) {
         $sql = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
-        
-        // Bind the parameters: Update password only if it's not empty
         if (empty($new_password)) {
-            $stmt->bind_param("sssi", $new_name, $new_email, $stored_password, $user_id); // Use current password if not updating it
+            $stmt->bind_param("sssi", $new_name, $new_email, $stored_password, $user_id);
         } else {
-            $stmt->bind_param("sssi", $new_name, $new_email, $new_password, $user_id); // Update the password with new hashed password
+            $stmt->bind_param("sssi", $new_name, $new_email, $new_password, $user_id);
         }
 
-        // Execute the update query
         if ($stmt->execute()) {
             $_SESSION['user_name'] = $new_name;  // Update session with new name
             $_SESSION['user_email'] = $new_email;  // Update session with new email
@@ -73,16 +85,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title> 
+    <title>Profile</title>
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/profile.css">
-
 </head>
-
 <body>
     <div class="profile-form">
         <h2>Profile 🧍</h2>
@@ -101,11 +110,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span class="help-block"><?php echo $email_err; ?></span>
             </div>
 
-            <!-- New Password Field  -->
+            <!-- Current Password Field -->
+            <div class="form-group <?php echo (!empty($current_password_err)) ? 'has-error' : ''; ?>">
+                <label for="current_password">Current Password</label>
+                <input type="password" name="current_password" class="form-control" required>
+                <span class="help-block"><?php echo $current_password_err; ?></span>
+            </div>
+
+            <!-- New Password Field -->
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label for="password">New Password (Leave it blank to keep the current password)</label>
                 <input type="password" name="password" class="form-control">
                 <span class="help-block"><?php echo $password_err; ?></span>
+            </div>
+
+            <!-- Pet Type Preferences (Checkboxes) -->
+            <div class="form-group">
+                <label for="pet_types">Preferred Pet Types</label>
+                <div>
+                    <input type="checkbox" name="pet_types[]" value="Dog" <?php echo (in_array('Dog', $_SESSION['preferred_pet_types'] ?? [])) ? 'checked' : ''; ?>> Dog
+                    <input type="checkbox" name="pet_types[]" value="Cat" <?php echo (in_array('Cat', $_SESSION['preferred_pet_types'] ?? [])) ? 'checked' : ''; ?>> Cat
+                    <input type="checkbox" name="pet_types[]" value="Bird" <?php echo (in_array('Bird', $_SESSION['preferred_pet_types'] ?? [])) ? 'checked' : ''; ?>> Bird
+                </div>
             </div>
 
             <!-- Submit Button -->
@@ -117,5 +143,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 </body>
-
 </html>

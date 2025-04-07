@@ -1,4 +1,9 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 session_start();
 
 require('db.php');
@@ -50,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION['user_id'] = $id;
                         $_SESSION['user_name'] = $name;
                         $_SESSION['user_email'] = $email;
+                        var_dump($_SESSION);  // Check if the session is set correctly after login
+
 
                         // Redirect to dashboard
                         header("location: index.php"); 

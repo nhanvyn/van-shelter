@@ -1,7 +1,3 @@
-<!-- index_view.php
-Description: This is the view template used by index.php. It renders the list of pets and pre-selects form fields (e.g., filters) based on the values present in the URL query parameters.
--->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +16,25 @@ Description: This is the view template used by index.php. It renders the list of
     <!-- Navigation Bar -->
     <?php include('components/navbar.php'); ?>
 
+    <div class="intro-section">
+        <div class="intro-section">
+        <!-- Paw Image beside the heading -->
+            <div class="logo">
+                <img src="images/paw.png" alt="Paw" class="paw-image">
+            </div>
+
+            <div class="logo">
+                <img src="images/paw.png" alt="Paw" class="paw-image2">
+            </div>
+            
+        <!-- Text Content -->
+        <div class="text-content">
+            <h1>Welcome to Find My Pet Vancouver!</h1>
+            <p>We welcome you to search, track, and manage data <br>on animals that are impounded by Vancouver Animal Shelter.</p>
+        </div>
+    </div>
+
+
     <main>
         <div class="container">
             <form class="filter-form" method="GET" action="index.php">
@@ -31,7 +46,8 @@ Description: This is the view template used by index.php. It renders the list of
                             <?php while ($row = $typeResult->fetch_assoc()): ?>
                                 <div>
                                     <?php
-                                    $checked = in_array($row['type_id'], $type_ids ?? []) ? 'checked' : '';
+                                    // Check if type is in the selected types from session or get
+                                    $checked = in_array($row['type_id'], $_SESSION['preferred_pet_types'] ?? []) || in_array($row['type_id'], $type_ids) ? 'checked' : '';
                                     ?>
                                     <input type="checkbox" name="checkBoxes[]" value="<?= $row['type_id'] ?>" <?= $checked ?>>
                                     <label><?= $row['type_name'] ?></label>
