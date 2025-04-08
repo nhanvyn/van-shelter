@@ -3,6 +3,12 @@
 <link rel="stylesheet" href="css/navbar.css">
 
 <div class="navbar">
+     <!-- Logo on the left -->
+     <div class="logo">
+        <a href="index.php">
+            <img src="images/logo.png" alt="Logo">
+        </a>
+    </div>
     <ul>
         <li><a href="index.php">Home</a></li>
 

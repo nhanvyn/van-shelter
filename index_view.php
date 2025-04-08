@@ -19,6 +19,26 @@ Description: This is the view template used by index.php. It renders the list of
 <body>
     <!-- Navigation Bar -->
     <?php include('components/navbar.php'); ?>
+   
+    <div class="intro-section">
+        <div class="paw-left">
+            <img src="images/paw.png" alt="Paw" class="paw-image">
+        </div>
+
+        <div class="text-content">
+            <h1>Welcome to Find My Pet Vancouver!</h1>
+            <p>
+                We welcome you to search, track, and manage data <br>
+                on animals that are impounded by Vancouver Animal Shelter.
+            </p>
+        </div>
+
+        <div class="paw-right">
+            <img src="images/paw.png" alt="Paw" class="paw-image2">
+        </div>
+    </div>
+
+
 
     <main>
         <div class="container">

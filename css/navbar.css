@@ -1,10 +1,17 @@
 
 /* Navigation Bar */
 .navbar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
     background-color: #2e9a73; 
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
+    padding: 5px 20px; 
+    margin-bottom: 0;
+}
+
+.navbar .logo img {
+    height: 50px;
+    width: auto;  
 }
 
 .navbar ul {
@@ -13,11 +20,12 @@
     padding: 0;
     display: flex;
     justify-content: flex-start;
+    gap: 1rem;
 }
 
 
 
-.navbar a {
+.navbar ul a {
     text-decoration: none;
     color: white;
     font-size: 16px;
@@ -33,6 +41,11 @@
 /* Styling for active link (logged-in user) */
 .navbar a.active {
     background-color: #1d7c59; 
+}
+
+
+.navbar .logo img {
+    display: block;        
 }
 
 
