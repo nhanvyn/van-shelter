@@ -190,3 +190,51 @@ html {
 .fa-solid {
     color: var(--stronger-green);
 }
+
+
+
+/* --------------Intro Section Styling (Below Navbar)------------- */
+.intro-section {
+    display: grid;
+    grid-template-columns: 180px 1fr 180px;
+    align-items: center;
+    background-color: #f0f8f0;
+    padding: 70px 70px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    gap: 20px;
+}
+
+/* Left and Right Paw Containers */
+.paw-left, .paw-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paw-image,
+.paw-image2 {
+    height: 65px;
+    width: auto;
+}
+
+.paw-image2 {
+    transform: rotate(20deg);
+}
+
+/* Text Content Styling */
+.text-content {
+    text-align: center;
+}
+
+.text-content h1 {
+    font-size: 36px;
+    color: #2e9a73;
+    margin-bottom: 20px;
+}
+
+.text-content p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+}

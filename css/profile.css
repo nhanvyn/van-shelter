@@ -17,7 +17,7 @@
 }
 
 /* Input fields */
-.profile-form .form-group input {
+.profile-form .form-group .full-w {
     width: 100%;
     padding: 10px;
     margin: 10px 0 20px;
@@ -68,4 +68,12 @@
 
 .profile-form p a:hover {
     text-decoration: underline;
+}
+
+
+.type-checkbox-group {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px
 }

@@ -98,17 +98,7 @@ if (!empty($within)) {
 
 
 // Constructing count query and filtered pet query from base query 
-$countQuery = "SELECT COUNT(*) " . $baseQuery;
-$fullQuery = "SELECT Pets.*, breeds.breed_name, animaltype.type_name, statuses.status_name " . $baseQuery;
-
-if ($sort === "oldest") {
-    $fullQuery .= " ORDER BY Pets.date_impounded ASC";
-} else {
-    $fullQuery .= " ORDER BY Pets.date_impounded DESC";
-}
-
-
-// Prepare, execute count query  
+$countQuery = "SELECT COUNT(*) " . $baseQuery; 
 $stmtCount = $db->prepare($countQuery);
 if (!$stmtCount) {
     http_response_code(500);
@@ -126,8 +116,26 @@ $totalPages = ceil($totalPets/$LIMIT);
 $page = isset($_GET['page']) ? max(0, intval($_GET['page'])) : 0; // max() makes sure user cannot pass negative number
 $OFFSET = $page* $LIMIT;
 
+// Constructing fetch query from base query
+$fullQuery = "SELECT Pets.*, breeds.breed_name, animaltype.type_name, statuses.status_name " . $baseQuery;
 
-// prepare and execute filtered pet query
+// Apply preference ordering only when no type filter is selected
+if (empty($type_ids) && empty($breed_id) && isset($_SESSION['user_id'])) {
+    $preferredTypes = getUserPreferences($db, $_SESSION['user_id']);
+    if (!empty($preferredTypes)) {
+        $fieldPlaceholders = implode(",", array_fill(0, count($preferredTypes), '?'));
+        $fullQuery .= " ORDER BY FIELD(animaltype.type_id, $fieldPlaceholders) DESC, Pets.date_impounded " . ($sort === "oldest" ? "ASC" : "DESC");
+        $params = array_merge($preferredTypes, $params);
+        $types = str_repeat("i", count($preferredTypes)) . $types;
+    } else {
+        $fullQuery .= " ORDER BY Pets.date_impounded " . ($sort === "oldest" ? "ASC" : "DESC");
+    }
+} else {
+    $fullQuery .= " ORDER BY Pets.date_impounded " . ($sort === "oldest" ? "ASC" : "DESC");
+}
+
+
+// prepare and execute fetch pet query
 $fullQuery .= " LIMIT $LIMIT OFFSET $OFFSET";
 $stmt = $db->prepare($fullQuery);
 if (!$stmt) {
@@ -142,7 +150,6 @@ if ($params) {
 $stmt->execute();
 $petResult = $stmt->get_result();
 ?>
-
 
 <?php
     // Sending back data to ajax client 
