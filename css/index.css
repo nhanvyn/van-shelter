@@ -238,3 +238,13 @@ html {
     color: #555;
     line-height: 1.6;
 }
+
+/* --------------saved pet section------------- */
+
+.saved-pet-sec {
+    margin-top: 5rem;
+}
+
+.saved-pet-sec h2{
+    margin-bottom: 2rem;
+}

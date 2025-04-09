@@ -19,8 +19,8 @@
         <?php else: ?>
             <!-- If the user is logged in, show Profile, Saved Pets, Notification and Logout links -->
             <li><a href="profile.php">Profile</a></li>
-
             <li><a href="bookmarked_pets.php">Saved Pets</a></li>
+            <li><a href="recommendations.php">Recommendations</a></li> 
 
             <li class="notification-container">
                 <a href="#" id="notificationIcon">
