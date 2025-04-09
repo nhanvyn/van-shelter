@@ -124,9 +124,15 @@ function getUserPreferences(mysqli $db, int $userId): array {
 }
 
 
-function appendPreferenceOrdering(&$query, &$params, &$types, $db, $user_id, $sort) {
+function appendPreferenceOrdering(&$query, &$params, &$types, $db, $user_id, $sort, $breed_id = '') {
+    // Skip preference if user filtered by breed (since breed implies type)
+    if (!empty($breed_id)) {
+        $query .= ($sort === "oldest") ? " ORDER BY Pets.date_impounded ASC" : " ORDER BY Pets.date_impounded DESC";
+        return;
+    }
+
     $preferredTypeIds = getUserPreferences($db, $user_id);
-    
+
     if (!empty($preferredTypeIds)) {
         $placeholders = implode(",", array_fill(0, count($preferredTypeIds), "?"));
         $order = "FIELD(animaltype.type_id, $placeholders) DESC, Pets.date_impounded ";

@@ -113,7 +113,11 @@ $totalPages = ceil($totalPets / $LIMIT);
 
 // Execute fetch query to get all pet results
 $fullQuery = "SELECT Pets.*, breeds.breed_name, animaltype.type_name, statuses.status_name " . $baseQuery;
-$fullQuery .= ($sort === "oldest") ? " ORDER BY Pets.date_impounded ASC" : " ORDER BY Pets.date_impounded DESC";
+if (empty($type_ids) && isset($_SESSION['user_id'])) {
+    appendPreferenceOrdering($fullQuery, $params, $types, $db, $_SESSION['user_id'], $sort, $breed_id);
+} else {
+    $fullQuery .= ($sort === "oldest") ? " ORDER BY Pets.date_impounded ASC" : " ORDER BY Pets.date_impounded DESC";
+}
 $fullQuery .= " LIMIT $LIMIT OFFSET $OFFSET";
 $stmt = $db->prepare($fullQuery);
 if ($params) $stmt->bind_param($types, ...$params);
@@ -121,6 +125,7 @@ if (!$stmt->execute()) {
     exit("Error executing fetch query: " . $stmt->error);
 }
 $petResult = $stmt->get_result();
+
 
 
 // Query for filters
